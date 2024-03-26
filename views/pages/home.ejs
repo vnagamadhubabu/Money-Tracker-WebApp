@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <title>Money Tracker WebApp</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-image: url("https://images.pexels.com/photos/1261728/pexels-photo-1261728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .card {
+        background-color: rgb(255 255 255 / 30%);
+        backdrop-filter: blur(10px);
+
+      }
+      .table{
+        border-radius: 10px !important;
+      }
+  
+      .table > :not(caption) > * > * {
+        background-color: rgb(255 255 255 / 30%) !important;
+        backdrop-filter: blur(10px) !important;
+      
+      }
+    </style>
+  </head>
+  <body data-new-gr-c-s-check-loaded="14.1058.0" data-gr-ext-installed="">
+    <h1 class="container text-center text-primary">Money Tracker Web App</h1>
+    <div class="card card-body container">
+      <form action="/add" method="POST">
+        <div class="input-section">
+          <div class="row">
+            <div class="col-3">
+              <input
+                type="text"
+                id="cate"
+                name="cate"
+                class="form-control"
+                placeholder="Category"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                type="number"
+                id="amount-input"
+                name="amt"
+                class="form-control"
+                placeholder="Amount"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                type="date"
+                id="date-input"
+                name="date"
+                class="form-control"
+                placeholder="Date"
+              />
+            </div>
+            <div class="col-3">
+              <button id="add-btn" type="submit" class="btn btn-primary mt-2">Add</button>
+            </div>
+          </div>
+        </div>
+      </form>
+     
+    </div>
+
+    <div class="expenses-list container">
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-12 text-start">
+            <h2>Expenses List</h2>
+          </div>
+          <div class="col-auto text-end">
+  
+              
+              <form action="/update-budget" method="POST">
+                <div class="input-group mb-3">
+                <span class="input-group-text btn btn-warning"
+                >Total ₹ </span
+              >
+              <input
+                type="text"
+                class="form-control"
+                aria-label=" Recipient's username"
+                aria-label=""
+                value="<%-budGet %>" 
+                name="budget"
+ 
+                aria-describedby="button-addon2"
+              />
+                <button
+                class="btn btn-secondary"
+                type="submit"
+                id="button-addon2"
+              >
+                Change Budget
+              </button>
+              </div>
+              </form>
+         
+          </div>
+          <div class="col-auto " style="font-size: 30px;">
+            <p class=" fw-bold ">Budget : <span class="text-primary  fw-bold ">₹ <%-budGet %></span></p>
+          </div>
+        </div>
+      </div>
+
+      <table class="table ">
+        <thead>
+          <tr class="bg-warning ">
+            <th scope="col">Category</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody id="expense-table-body">
+          <% expData.forEach(data => { %>
+            <tr>
+              <td scope="row"><%= data.cate %></td>
+              <td>₹ <%= data.amt %></td>
+              <td><%= data.date %></td>
+              <td><form action="/<%=data.id%>" method="POST" class="d-inline ">
+                <button type="submit" class="btn btn-outline-danger ">Delete</button>
+              </form></td>
+            </tr>
+          <% }) %>
+          
+       
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="fw-bold text-primary ">Total:</td>
+            <td id="total-amount" class="fw-bold ">₹ <%-totalAmt %></td>
+            <td>
+              <% if (totalAmt > budGet) { %>
+                <span class="text-danger fw-bold">Extended the Budget</span>
+              <% } else { %>
+                <span class="text-success fw-bold">Within Budget</span>
+              <% } %>
+            </td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </body>
+</html>
